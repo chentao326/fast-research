@@ -1,8 +1,37 @@
-# FastResearch Web App — 产品需求文档（PRD）
+# FastResearch — 产品需求文档（PRD）
 
-> 版本：v0.1 草案  
-> 日期：2026-06-06  
-> 基于：Hermes Skill「fast-research」实际跑通验证  
+> 版本：v0.2  
+> 日期：2026-06-06（更新）  
+> 基于：Hermes Skill「fast-research」v1.3.0 实际跑通验证  
+> GitHub：https://github.com/chentao326/fast-research
+
+---
+
+## 零、当前状态
+
+### 已交付：Hermes Skill 版（v1.3.0）
+
+FastResearch 首先以 Hermes Agent Skill 形态交付，已验证完整五步工作流。
+
+**Skill 位置**：`~/.hermes/skills/research/fast-research/`
+
+**已跑通**：
+- 香烟行业完整调研（五步走完，产出 A+C+D 三份）
+- 搜索故障处理（DDG lxml 兼容性、curl 替代、DDG 质量退化应对）
+- 故障速查文档
+- 美化自动集成（v1.3.0）：产出自动包含 web-design-engineer / web-video-presentation 美化
+
+**Skill 文件**：
+| 文件 | 内容 |
+|------|------|
+| SKILL.md | 五步工作流 + 搜索故障处理 + 美化自动化 |
+| references/question-frameworks.md | 5 套提问框架 |
+| references/output-templates.md | 4 种输出模板 + 美化说明 |
+| references/case-study-perfume.md | 香水案例 |
+
+### 待开发：Web App 版（本 PRD 主体）
+
+Skill 版验证了方法论可行性。Web App 版的目标是把这套流程做成独立产品，让非 Hermes 用户也能用。
 
 ---
 
@@ -10,7 +39,13 @@
 
 ### 1.1 产品定位
 
-FastResearch 是一个**基于「快速调研法」五步工作流的 AI 调研助手**。用户输入一个话题，系统按方法论引导完成从「提出问题」到「回顾初心」的完整流程，最终产出结构化调研报告。
+FastResearch 是一个**基于「快速调研法」五步工作流的 AI 调研助手**。用户输入一个话题，系统按方法论引导完成从「提出问题」到「回顾初心」的完整流程，最终产出**自动美化**的结构化调研报告。
+
+**两个交付形态**：
+| 形态 | 用户 | 状态 |
+|------|------|------|
+| Hermes Skill | Hermes Agent 用户（当前用户） | ✅ v1.3.0 已交付 |
+| Web App | 任何有浏览器的人 | 📋 本 PRD |
 
 ### 1.2 一句话价值
 
@@ -70,16 +105,22 @@ FastResearch 是一个**基于「快速调研法」五步工作流的 AI 调研�
 - **来源追踪**：每条关键信息标注搜索来源
 - **完成判断**：用户觉得「挖够了」→ 手动进入下一步
 
-#### Step 4：整理输出（输出面板）
+#### Step 4：整理输出 + 自动美化（输出面板）
 
-- **四种输出格式选择**：
-  - A. 行业调研报告（Markdown + 可下载 PDF）
-  - B. PPT 大纲（按页输出 bullet points）
-  - C. 科普文案（视频大纲 / 图文文章）
-  - D. 一页纸速览
-- **一键生成**：点击后流式输出
-- **可编辑**：输出后用户可手动修改任何段落
-- **导出**：复制 Markdown / 下载 PDF / 复制到飞书
+用户选择输出格式 → 系统**一次性产出** Markdown 文字稿 + 美化网页，不需要用户额外操作。
+
+| 输出类型 | 文字稿 | 美化产物 | 技术 |
+|---------|--------|---------|------|
+| A. 调研报告 | Markdown 文件 | 精美网页（含数据可视化、品牌化排版） | web-design-engineer |
+| C. 视频文案 | Markdown 文件 | 16:9 网页演示（step 驱动、可录屏） | web-video-presentation |
+| D. 一页纸 | Markdown 文件 | 精美单页信息卡 | web-design-engineer |
+| B. PPT 大纲 | Markdown 文件 | 不美化（中间产物） | — |
+
+**美化流程**（自动触发）：
+1. Markdown 文字稿生成落盘
+2. 自动调用对应美化引擎
+3. 美化产物落盘到同一目录
+4. 用户可在浏览器直接打开 HTML / 启动 Vite dev server 查看
 
 #### Step 5：回归初心（对比面板）
 
@@ -115,22 +156,24 @@ FastResearch 是一个**基于「快速调研法」五步工作流的 AI 调研�
 | 认证 | NextAuth.js（Google / GitHub OAuth） | 轻量 |
 | 部署 | Vercel | 你的经验（landing-generator），免费额度够用 |
 | UI | Tailwind CSS + shadcn/ui | 快速出界面 |
-| 样式 | 支持纯文本 / Markdown 两种输出模式 | 用户偏好纯文本 |
+| 美化引擎 | web-design-engineer + web-video-presentation | 已有 Hermes Skill，可复用 |
 
 ### 3.2 架构概览
 
 ```
 用户 → Next.js App → AI API (DeepSeek / GPT / Claude)
                     → Tavily Search API
+                    → 美化引擎 (web-design-engineer / web-video-presentation)
                     → Vercel Postgres (调研历史)
 ```
 
 ### 3.3 关键技术决策
 
-1. **搜索选 Tavily 而非 DDG**：Hermes 的 DDG 后端不稳定，Tavily 是商业 API，有免费额度，中文搜索质量好
+1. **搜索选 Tavily 而非 DDG**：Skill 版验证 DDG 不稳定（lxml 兼容性、质量退化），Tavily 是商业 API 更可靠
 2. **流式输出**：调研报告生成要流式，不然用户等太久
 3. **上下文管理**：五步之间需要携带上下文——Step 1 的问题列表要贯穿全程
-4. **不依赖浏览器**：不需要 Camofox / Puppeteer，纯 API 调用即可
+4. **美化自动化**：Skill 版 v1.3.0 已验证——Markdown + 美化网页一次产出，Web App 版继承此设计
+5. **不依赖浏览器**：不需要 Camofox / Puppeteer，纯 API 调用即可
 
 ### 3.4 成本估算
 
@@ -167,9 +210,20 @@ FastResearch 是一个**基于「快速调研法」五步工作流的 AI 调研�
 - 数据标注来源（AI 知识库 vs 实时搜索）
 - 如果搜索 API 挂了，明确告知，不造假
 
+### 4.4 美化即默认
+
+- Skill 版 v1.3.0 已验证：用户不需要说「美化一下」，输出就是美化过的
+- Web App 版继承此原则——A/C/D 类型输出 = 文字稿 + 美化网页，一键产出
+
 ---
 
 ## 五、开发路线图
+
+### Phase 0：已完成 ✅
+
+- [x] Hermes Skill v1.3.0（五步工作流 + 搜索故障处理 + 美化自动化）
+- [x] GitHub 仓库 + 案例产出（香烟行业调研）
+- [x] 本 PRD
 
 ### Phase 1：MVP（1-2 周）
 
@@ -177,7 +231,7 @@ FastResearch 是一个**基于「快速调研法」五步工作流的 AI 调研�
 - [ ] Step 1：话题输入 + 问题引导 + AI 扩展
 - [ ] Step 2：Tavily 搜索 + AI 认知框架生成
 - [ ] Step 3：聊天式深度搜索 + 「逼问」快捷按钮
-- [ ] Step 4：四种输出格式生成 + 流式输出
+- [ ] Step 4：四种输出格式 + 流式输出 + 美化自动触发
 - [ ] Step 5：并排对比面板
 - [ ] 调研历史存储（Vercel Postgres）
 - [ ] 部署到 Vercel
@@ -218,3 +272,17 @@ FastResearch 是一个**基于「快速调研法」五步工作流的 AI 调研�
 | 用户跳过 Step 1/5 | 高 | 设计上制造「温和的阻力」——不是不能跳过，但要让用户看到跳过成本 |
 | AI 输出质量不稳定 | 中 | 输出后强制用户审核 + 编辑 |
 | 跟 ChatGPT Deep Research 重叠 | 低 | 差异化在工作流和「逼人思考」，不是纯 AI 能力 |
+
+---
+
+## 八、Skill 版 → Web App 版迁移对照
+
+| 维度 | Skill 版（已交付） | Web App 版（本 PRD） |
+|------|-------------------|---------------------|
+| 入口 | Hermes 对话（"调研 XXX"） | 浏览器 URL |
+| 搜索 | web_search（DDG，不稳定） | Tavily API（稳定） |
+| 输出 | 本地 .md + .html 文件 | 在线预览 + 导出 |
+| 美化 | web-design-engineer / web-video-presentation | 同左，集成到 Web 流程 |
+| 存储 | 无 | Vercel Postgres |
+| 分享 | 无 | 公开链接 |
+| 用户 | Hermes 用户 | 任何人 |
