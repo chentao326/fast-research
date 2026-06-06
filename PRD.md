@@ -1,6 +1,6 @@
 # FastResearch — 产品需求文档（PRD）
 
-> 版本：v0.3  
+> 版本：v0.4  
 > 日期：2026-06-06  
 > 基于：Hermes Skill「fast-research」v1.3.0 实际跑通验证（香烟行业案例）  
 > GitHub：https://github.com/chentao326/fast-research
@@ -216,6 +216,99 @@ Skill 版使用的是 Hermes 内置 web_search（基于 DuckDuckGo），实际�
 **完整版已知问题**：
 1. 章节字号写死 px，不如简化版的 vw/clamp 响应式
 2. bold-signal 主题的 hot orange 偏硬，不如简化版的暖金适应性强
+
+---
+
+## 五、技术设计（架构师 + 前端）
+
+### 5.1 状态管理
+
+使用 Zustand + persist 中间件，全局状态对象 `ResearchSession`：
+
+```
+ResearchSession {
+  id, topic, status: 'step1'|...|'done'
+  motivation, questions[], finalQuestions[]     // Step 1
+  searchResults[], framework, deepDiveDirections[]  // Step 2
+  deepDiveMessages[], deepDiveConclusions[]      // Step 3
+  selectedOutputs[], outputs[]                   // Step 4
+  errors[]                                       // 异常日志
+}
+```
+
+- `advanceStep()`：推进步骤，带退出条件校验
+- `handleError(e)`：异常处理（记录 + 降级）
+- `persist()`：自动保存到 localStorage，支持断点续传
+
+### 5.2 异常流设计
+
+| 异常 | 降级策略 | 用户感知 |
+|------|---------|---------|
+| Tavily 超时/403/429 | 跳过搜索，用 AI 知识库 | 红色提示 + 「继续用 AI 知识库」按钮 |
+| AI API 超时（>60s） | 重试 1 次 → 返回已生成部分 | 黄色提示「部分内容可能不完整」 |
+| 认知框架质量差 | 重新搜索（换关键词）+ 提炼 | 「重新生成」按钮 |
+| 用户中途离开 | 自动保存进度 | 下次打开「继续上次调研」 |
+
+### 5.3 全局 UI 框架
+
+```
+┌─────────────────────────────────────────┐
+│  ○ 问题先行  ● 二手信息  ○ 深度搜索 ...   │  ← 五步进度条
+├──────────────────┬──────────────────────┤
+│  主面板           │  📋 你的问题（常驻）   │
+│  (Step 1-5 切换) │  🔍 认知框架（Step2+） │
+└──────────────────┴──────────────────────┘
+```
+
+- 进度条：未开始(灰) / 进行中(主色+动画) / 已完成(绿✓)，可回看已完成步骤
+- 问题栏：Step 1 确认后始终显示，Step 3/5 时作为提醒
+- 框架摘要：Step 2 生成后折叠卡片显示在问题栏下方
+
+### 5.4 数据模型
+
+| 模型 | 字段 |
+|------|------|
+| User | id, email, name, createdAt |
+| Research | id, userId, topic, motivation, questions[], framework{}, deepDives[], outputs[], status, createdAt, updatedAt |
+| Output | id, researchId, type('A'|'B'|'C'|'D'), markdownPath, htmlPath, createdAt |
+
+### 5.5 用户故事
+
+**US1：求职者面试准备**
+作为求职者，我想在面试前快速了解目标行业，以便展现行业认知。
+- 验收：走完五步 + 产出 A 类型报告 + 能回答自己最初的问题
+
+**US2：职场人业务评估**
+作为职场人，我接触了新业务方向，想快速了解规模和竞争格局。
+- 验收：Step 2 认知框架生成 + 一页纸速览
+
+**US3：内容创作者素材收集**
+作为创作者，我想调研话题并产出视频文案。
+- 验收：走完五步 + C 类型视频文案 + 网页演示
+
+### 5.6 每步退出条件
+
+| 步骤 | 完成条件 | 可跳过？ | 跳过后果 |
+|------|---------|---------|---------|
+| Step 1 | 确认 3+ 个问题 | ❌ | — |
+| Step 2 | 认知框架已生成 | ✅ | 标注「未搜索，基于 AI 知识库」 |
+| Step 3 | 用户点击进入下一步 | ✅ | 深度可能不够 |
+| Step 4 | 至少选一种格式 + 输出完成 | ❌ | — |
+| Step 5 | 完成自答或点击跳过 | ✅ | 提示「跳过就少了思考训练」 |
+
+### 5.7 Step 1 示例问题引导（防流失）
+
+空白输入框下方折叠卡片：
+
+```
+📌 想不出来？看看示例：
+• 这个领域规模多大？增速如何？
+• 主要参与者是谁？怎么赚钱？
+• 有什么争议或不同的看法？
+• 跟我有什么关系/影响？
+```
+
+点击示例自动填入输入框，可编辑。
 
 ---
 
