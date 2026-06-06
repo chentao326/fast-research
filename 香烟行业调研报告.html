@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>香烟行业调研报告 · FastResearch</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #141210;
+  --surface: #1a1814;
+  --elevated: #1e1b17;
+  --gold: #c8965c;
+  --gold-bright: #d4a574;
+  --gold-dim: #7a6245;
+  --text: #e8e0d5;
+  --text-dim: #8a8070;
+  --text-muted: #5c5650;
+  --accent-red: #8b3a3a;
+  --accent-red-bright: #a34a4a;
+  --border: #2a2520;
+  --border-light: #332d26;
+  --green: #5c8a5c;
+  --green-dim: #3a5c3a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 240px;
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 48px 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.sidebar-brand {
+  padding: 0 28px 32px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.sidebar-brand .brand-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.sidebar-brand .brand-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+.sidebar-nav {
+  padding: 0 20px;
+  flex: 1;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  color: var(--gold);
+  background: rgba(200,150,92,0.08);
+}
+
+.sidebar-footer {
+  padding: 24px 28px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 16px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Main */
+.main {
+  margin-left: 240px;
+  max-width: 900px;
+  padding: 80px 64px;
+}
+
+/* Hero */
+.hero {
+  margin-bottom: 80px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-tag {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  border: 1px solid var(--gold-dim);
+  padding: 4px 14px;
+  margin-bottom: 28px;
+}
+
+.hero h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.hero .definition {
+  font-size: 18px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 680px;
+  margin-bottom: 32px;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 32px;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* Key Stats Bar */
+.key-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-bottom: 80px;
+}
+
+.key-stat {
+  background: var(--elevated);
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.key-stat .num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.key-stat .num small { font-size: 16px; font-weight: 400; color: var(--gold-dim); }
+
+.key-stat .label {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* Section */
+.section {
+  margin-bottom: 64px;
+}
+
+.section:target {
+  animation: flash 0.6s ease;
+}
+
+@keyframes flash {
+  0%, 100% { background: transparent; }
+  50% { background: rgba(200,150,92,0.03); }
+}
+
+.section-number {
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+.section h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  line-height: 1.3;
+}
+
+.section h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold-bright);
+  margin: 28px 0 12px;
+}
+
+.section p, .section li {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text);
+}
+
+.section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.section li {
+  padding: 8px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.section li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 17px;
+  width: 5px;
+  height: 5px;
+  background: var(--gold-dim);
+  border-radius: 50%;
+}
+
+/* Conclusion Box */
+.conclusion {
+  background: rgba(200,150,92,0.06);
+  border-left: 3px solid var(--gold);
+  padding: 16px 20px;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--gold-bright);
+  font-weight: 500;
+}
+
+/* Cost Breakdown */
+.cost-bar {
+  margin: 28px 0;
+  height: 40px;
+  display: flex;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.cost-bar .segment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: #fff;
+  min-width: 0;
+  transition: transform 0.2s;
+}
+
+.cost-bar .segment:hover { transform: scaleY(1.15); }
+
+.cost-tax { background: var(--accent-red); width: 60%; }
+.cost-profit { background: var(--gold-dim); width: 17%; }
+.cost-retail { background: #5c6050; width: 10%; }
+.cost-prod { background: #3a3a35; width: 13%; }
+
+.cost-legend {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.cost-legend span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cost-legend .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Tax Comparisons */
+.tax-compare {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.tax-item {
+  background: var(--elevated);
+  padding: 20px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.tax-item .big {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.tax-item .desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* 30-Second Box */
+.highlight-box {
+  background: linear-gradient(135deg, rgba(200,150,92,0.1), rgba(139,58,58,0.1));
+  border: 1px solid rgba(200,150,92,0.2);
+  padding: 40px;
+  margin-bottom: 64px;
+}
+
+.highlight-box .hl-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.highlight-box p {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  line-height: 1.7;
+  font-weight: 400;
+  color: var(--text);
+}
+
+/* Industry Chain */
+.chain {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.chain-node {
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  padding: 24px;
+}
+
+.chain-node .node-icon {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.chain-node .node-title {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: var(--gold-bright);
+}
+
+.chain-node ul {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
+.chain-node li { padding: 3px 0; padding-left: 0; }
+.chain-node li::before { display: none; }
+
+/* Limitations */
+.limitations {
+  border-top: 1px solid var(--border);
+  padding-top: 32px;
+  margin-top: 48px;
+}
+
+.limitations h3 {
+  font-size: 14px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.limitations ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 24px;
+}
+
+.limitations li {
+  font-size: 13px;
+  color: var(--text-dim);
+  padding: 6px 0;
+  padding-left: 16px;
+}
+
+.limitations li::before {
+  top: 15px;
+  width: 4px;
+  height: 4px;
+  background: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 40px 24px; }
+  .hero h1 { font-size: 32px; }
+  .key-stats { grid-template-columns: repeat(2, 1fr); }
+  .tax-compare { grid-template-columns: 1fr; }
+  .chain { grid-template-columns: 1fr; }
+  .limitations ul { grid-template-columns: 1fr; }
+  .cost-legend { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-name">FastResearch</div>
+    <div class="brand-sub">快速调研法</div>
+  </div>
+  <div class="sidebar-nav">
+    <a href="#overview">一 · 行业概览</a>
+    <a href="#chain">二 · 产业链</a>
+    <a href="#competition">三 · 竞争格局</a>
+    <a href="#business">四 · 商业模式</a>
+    <a href="#tax">五 · 税收与财政</a>
+    <a href="#monopoly">六 · 专卖制度</a>
+    <a href="#summary">七 · 30 秒速览</a>
+  </div>
+  <div class="sidebar-footer">香烟行业案例 · 2026</div>
+</nav>
+
+<!-- Main Content -->
+<main class="main">
+
+  <!-- Hero -->
+  <header class="hero">
+    <span class="hero-tag">Industry Report</span>
+    <h1>香烟行业<br>调研报告</h1>
+    <p class="definition">
+      中国烟草是一个由国家专卖垄断、年上缴税利超 1.5 万亿的巨型产业——它既是财政支柱，也是全球最大的烟草生产国和消费国。
+    </p>
+    <div class="hero-meta">
+      <span>调研时间 2026.06</span>
+      <span>快速调研法 · 五步法</span>
+      <span>数据截至 2024–2025</span>
+    </div>
+  </header>
+
+  <!-- Key Stats -->
+  <section class="key-stats">
+    <div class="key-stat">
+      <div class="num">1.54<small>万亿</small></div>
+      <div class="label">2024 年上缴税利</div>
+    </div>
+    <div class="key-stat">
+      <div class="num">3<small>亿</small></div>
+      <div class="label">中国烟民数量</div>
+    </div>
+    <div class="key-stat">
+      <div class="num">1500<small>万亩</small></div>
+      <div class="label">烟草种植面积</div>
+    </div>
+    <div class="key-stat">
+      <div class="num">60<small>%</small></div>
+      <div class="label">一包烟中税收占比</div>
+    </div>
+  </section>
+
+  <!-- Section 1: Overview -->
+  <section class="section" id="overview">
+    <div class="section-number">Section 01</div>
+    <h2>行业概览</h2>
+    <p>中国烟草不是一个普通的「行业」，它是一个国家垄断的财政系统。全球烟草市场规模 9514 亿美元（2024 年），中国独占约 40–45%。全国 3 亿烟民，年消费卷烟约 2.3–2.5 万亿支，是全球最大的烟草生产国和消费国。</p>
+    <div class="conclusion">中国烟草不是一个普通的「行业」，它是一个国家垄断的财政系统。</div>
+  </section>
+
+  <!-- Section 2: Industry Chain -->
+  <section class="section" id="chain">
+    <div class="section-number">Section 02</div>
+    <h2>产业链分析</h2>
+    <p>这是一个从种子到货架全链条封闭的体系。烟农、工厂、零售户都在同一张牌照网络里。</p>
+
+    <div class="chain">
+      <div class="chain-node">
+        <div class="node-icon">🌱</div>
+        <div class="node-title">上游 · 烟叶种植</div>
+        <ul>
+          <li>主产区：云南（30%）、贵州、湖南</li>
+          <li>烟农必须卖给烟草公司</li>
+          <li>农业产值约 600 亿</li>
+          <li>烟农无议价权</li>
+        </ul>
+      </div>
+      <div class="chain-node">
+        <div class="node-icon">🏭</div>
+        <div class="node-title">中游 · 生产制造</div>
+        <ul>
+          <li>中国烟草总公司</li>
+          <li>18 个省级中烟公司</li>
+          <li>中华 · 芙蓉王 · 玉溪</li>
+          <li>不能跨省设厂</li>
+        </ul>
+      </div>
+      <div class="chain-node">
+        <div class="node-icon">🏪</div>
+        <div class="node-title">下游 · 销售零售</div>
+        <ul>
+          <li>专卖许可证制度</li>
+          <li>约 500 万零售户</li>
+          <li>禁电商 · 禁自动售卖</li>
+          <li>2025 电子烟纳入专卖</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="conclusion">全链条封闭：种子 → 中烟工厂 → 专卖零售户，每一环都有许可证门槛。</div>
+  </section>
+
+  <!-- Section 3: Competition -->
+  <section class="section" id="competition">
+    <div class="section-number">Section 03</div>
+    <h2>竞争格局</h2>
+    <p>传统行业的「竞争」是市场化的，但烟草行业的「竞争」在专卖框架内运行。品牌之间有竞争，但价格带是行政划定的——高端中华独占鳌头（千元级/条），中端利群、黄鹤楼密集竞争，低端价格高度管制。</p>
+    <div class="conclusion">这不是一个靠「产品创新」或「营销」就能颠覆的市场。竞争的天花板是专卖制度。</div>
+  </section>
+
+  <!-- Section 4: Business Model -->
+  <section class="section" id="business">
+    <div class="section-number">Section 04</div>
+    <h2>商业模式 & 利润</h2>
+
+    <h3>一包 30 元香烟的成本构成</h3>
+
+    <div class="cost-bar">
+      <div class="segment cost-tax">税收 18元</div>
+      <div class="segment cost-profit">公司利润 5元</div>
+      <div class="segment cost-retail">零售 3元</div>
+      <div class="segment cost-prod">成本 3元</div>
+    </div>
+
+    <div class="cost-legend">
+      <span><span class="dot" style="background:var(--accent-red)"></span>税收 60% — 消费税+增值税</span>
+      <span><span class="dot" style="background:var(--gold-dim)"></span>公司利润 17%</span>
+      <span><span class="dot" style="background:#5c6050"></span>零售户 10%</span>
+      <span><span class="dot" style="background:#3a3a35"></span>生产成本 10%</span>
+    </div>
+
+    <h3>为什么利润这么高？</h3>
+    <ul>
+      <li>需求刚性——成瘾品，价格弹性低</li>
+      <li>零广告费——禁止烟草广告</li>
+      <li>零渠道成本——零售户主动上门批货</li>
+      <li>规模效应——自动化生产，边际成本极低</li>
+    </ul>
+
+    <div class="conclusion">烟草是「印钱」生意。毛利率堪比茅台，但风险更低——没有库存贬值压力，没有品牌老化焦虑。</div>
+  </section>
+
+  <!-- Section 5: Tax -->
+  <section class="section" id="tax">
+    <div class="section-number">Section 05</div>
+    <h2>税收与财政</h2>
+    <p>1.54 万亿上缴税利（2024 年），这是烟草行业最核心的数字。它撑起了中国财政的一个关键角落。</p>
+
+    <div class="tax-compare">
+      <div class="tax-item">
+        <div class="big">≈ 92%</div>
+        <div class="desc">中国国防预算（1.67 万亿）</div>
+      </div>
+      <div class="tax-item">
+        <div class="big">≈ 15%</div>
+        <div class="desc">中央一般公共预算收入</div>
+      </div>
+      <div class="tax-item">
+        <div class="big">≈ 26%</div>
+        <div class="desc">全国教育经费</div>
+      </div>
+      <div class="tax-item">
+        <div class="big">×77</div>
+        <div class="desc">嫦娥探月工程</div>
+      </div>
+    </div>
+
+    <div class="conclusion">烟草税收的不可替代性是专卖制度存在的根本理由。3 亿烟民，人均每年贡献约 5000 元税利。</div>
+  </section>
+
+  <!-- Section 6: Monopoly -->
+  <section class="section" id="monopoly">
+    <div class="section-number">Section 06</div>
+    <h2>专卖制度深度分析</h2>
+
+    <p><strong>起源：</strong>1983 年《烟草专卖条例》，目的是结束全国上千家小烟厂的混乱局面。中国烟草总公司 + 国家烟草专卖局 = 一套人马两块牌子，既管生产又管执法。</p>
+
+    <h3>制度逻辑（四维度）</h3>
+    <ul>
+      <li><strong>财政</strong>——高效收税，出厂环节一次性征缴</li>
+      <li><strong>控烟</strong>——通过价格管制和渠道控制限制供给</li>
+      <li><strong>产业</strong>——防止国际烟草巨头冲击国内市场</li>
+      <li><strong>社会</strong>——保护烟农基本利益</li>
+    </ul>
+
+    <h3>争议与裂缝</h3>
+    <ul>
+      <li>控烟 vs 税收：说控烟但不敢真控</li>
+      <li>许可证黑市：部分地区转租价达 20 万元</li>
+      <li>电子烟纳入专卖后，90% 以上中小企业退出</li>
+    </ul>
+
+    <div class="conclusion">专卖 = 以垄断换控制。但「控制」的效果有多好，取决于你信不信 3 亿烟民这个数字。</div>
+  </section>
+
+  <!-- Section 7: 30 Seconds -->
+  <section class="section" id="summary">
+    <div class="section-number">Section 07</div>
+    <h2>如果只有 30 秒</h2>
+
+    <div class="highlight-box">
+      <div class="hl-label">TL;DR</div>
+      <p>
+        中国烟草年上缴税利 1.54 万亿，≈ 军费，≈ 全国烟民人均「纳税」5000 元。专卖垄断从种子管到货架，一包烟 60% 是税。它是财政压舱石，也是控烟的悖论——靠它养活，又宣称要消灭它。3 亿烟民正在缓慢减少，但这台万亿印钞机还没找到替代品。
+      </p>
+    </div>
+  </section>
+
+  <!-- Limitations -->
+  <section class="limitations">
+    <h3>调研局限性</h3>
+    <ul>
+      <li>快速调研法给的是框架，不是灵魂——体验性知识无法通过搜索获得</li>
+      <li>各省中烟品牌竞争细节未深入</li>
+      <li>2025 年全年数据尚未完全公开</li>
+      <li>国际市场出口竞争力未充分覆盖</li>
+    </ul>
+  </section>
+
+</main>
+
+<script>
+// Active sidebar link
+const navLinks = document.querySelectorAll('.sidebar-nav a');
+const sections = document.querySelectorAll('.section');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(link => link.classList.remove('active'));
+      const id = entry.target.id;
+      const active = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -60% 0px' });
+
+sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

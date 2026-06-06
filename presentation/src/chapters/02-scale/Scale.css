@@ -1,0 +1,17 @@
+.sc-wrap { display:flex; align-items:center; justify-content:center; width:100%; height:100%; text-align:center; }
+.sc-big { font-family:var(--font-display-en); font-size:140px; font-weight:900; color:var(--accent); line-height:1; animation:sc-pop 0.5s ease both; }
+.sc-sub { font-size:32px; color:var(--text-mute); margin-top:16px; }
+.sc-china { font-family:var(--font-display-en); font-size:64px; font-weight:900; color:var(--accent); margin-top:24px; animation:sc-pop 0.5s 0.2s ease both; }
+.sc-bar-wrap { display:flex; align-items:center; gap:16px; margin:28px auto 0; max-width:500px; }
+.sc-bar { height:28px; animation:sc-grow 0.8s ease both; }
+.sc-bar.cn { background:var(--accent); width:40%; }
+.sc-bar.ro { background:var(--text-faint); width:60%; }
+.sc-entity { max-width:70%; }
+.sc-name { font-family:var(--font-display-en); font-size:56px; font-weight:900; color:var(--text); }
+.sc-roles { display:flex; gap:24px; justify-content:center; margin-top:24px; }
+.sc-role { padding:12px 28px; border:3px solid var(--accent); font-size:26px; color:var(--accent); letter-spacing:2px; }
+.sc-count { font-family:var(--font-display-en); font-size:200px; font-weight:900; color:var(--accent); line-height:1; animation:sc-pop 0.5s ease both; }
+.sc-lbl { font-size:36px; color:var(--text-mute); margin-top:8px; }
+.sc-brand { font-family:var(--font-display-en); font-size:48px; font-weight:900; color:var(--text); margin:16px 0; }
+@keyframes sc-pop { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
+@keyframes sc-grow { from{width:0!important} }

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一包 30 块的烟，钱到底被谁赚了？</title>
+<style>
+:root {
+  --bg: #0a0a0a;
+  --text: #f0e8d8;
+  --gold: #c8965c;
+  --accent: #d44040;
+  --dim: #555;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.stage-wrap {
+  width: 100vw;
+  height: 56.25vw;
+  max-height: 100vh;
+  max-width: 177.78vh;
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  padding: 8% 10%;
+}
+
+.scene.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scene-1 .hook-num {
+  font-size: 16vw;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  opacity: 0.08;
+  position: absolute;
+  left: 5%;
+  top: -5%;
+}
+
+.scene-1 .hook-text {
+  font-size: 3.2vw;
+  font-weight: 300;
+  line-height: 1.6;
+  max-width: 70%;
+  text-align: center;
+  color: var(--text);
+}
+
+.scene-1 .hook-text strong {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.scene-2 {
+  flex-direction: column;
+  gap: 3vh;
+}
+
+.scene-2 .stat-row {
+  display: flex;
+  gap: 6vw;
+  align-items: baseline;
+}
+
+.scene-2 .big-num {
+  font-size: 8vw;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.scene-2 .big-num small { font-size: 3vw; }
+
+.scene-2 .stat-desc {
+  font-size: 1.8vw;
+  color: #888;
+  max-width: 30vw;
+  line-height: 1.6;
+}
+
+.scene-3 {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 6% 12%;
+}
+
+.scene-3 .price-tag {
+  font-size: 2vw;
+  color: #666;
+  margin-bottom: 2vh;
+}
+
+.scene-3 .bar-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  margin: 3vh 0;
+}
+
+.scene-3 .bar-row {
+  display: flex;
+  align-items: center;
+  gap: 2vw;
+}
+
+.scene-3 .bar-label {
+  font-size: 1.4vw;
+  color: #aaa;
+  width: 12vw;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.scene-3 .bar-track {
+  flex: 1;
+  height: 2.5vh;
+  background: #1a1a1a;
+  position: relative;
+  overflow: hidden;
+}
+
+.scene-3 .bar-fill {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: width 0.8s ease;
+}
+
+.scene-3 .bar-val {
+  font-size: 1.4vw;
+  color: var(--gold);
+  width: 8vw;
+  flex-shrink: 0;
+}
+
+.bar-tax { background: var(--accent); width: 60%; }
+.bar-profit { background: var(--gold); width: 17%; }
+.bar-retail { background: #777; width: 10%; }
+.bar-cost { background: #333; width: 13%; }
+
+.scene-3 .punch {
+  font-size: 2.2vw;
+  color: var(--text);
+  margin-top: 3vh;
+  font-weight: 300;
+}
+
+.scene-4 {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8% 12%;
+  gap: 3vh;
+}
+
+.scene-4 .year {
+  font-size: 8vw;
+  font-weight: 900;
+  color: var(--gold);
+  opacity: 0.15;
+  position: absolute;
+  right: 10%;
+  top: 10%;
+}
+
+.scene-4 h3 {
+  font-size: 2.5vw;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 1vh;
+}
+
+.scene-4 p {
+  font-size: 1.6vw;
+  color: #999;
+  line-height: 1.8;
+  max-width: 60vw;
+}
+
+.scene-5 {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8% 12%;
+  gap: 3vh;
+}
+
+.scene-5 .alert-tag {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 1vh 2vw;
+  font-size: 1.3vw;
+  letter-spacing: 3px;
+  margin-bottom: 2vh;
+}
+
+.scene-5 h3 {
+  font-size: 3vw;
+  font-weight: 700;
+  line-height: 1.4;
+  max-width: 65vw;
+  color: var(--text);
+}
+
+.scene-5 .impact {
+  font-size: 2.5vw;
+  color: var(--accent);
+  font-weight: 900;
+  margin-top: 2vh;
+}
+
+.scene-5 p {
+  font-size: 1.5vw;
+  color: #999;
+  max-width: 55vw;
+  line-height: 1.8;
+  margin-top: 1vh;
+}
+
+.scene-6 {
+  flex-direction: column;
+  text-align: center;
+  gap: 4vh;
+}
+
+.scene-6 .end-line {
+  font-size: 2.8vw;
+  line-height: 1.5;
+  color: var(--text);
+  font-weight: 300;
+}
+
+.scene-6 .end-line em {
+  color: var(--gold);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.scene-6 .end-tag {
+  font-size: 1.4vw;
+  color: #555;
+  letter-spacing: 4px;
+}
+
+.progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--gold);
+  transition: width 0.4s ease;
+  opacity: 0;
+}
+
+.stage-wrap:hover .progress { opacity: 1; }
+
+.steps {
+  position: absolute;
+  bottom: 3vh;
+  right: 5%;
+  display: flex;
+  gap: 1vw;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.stage-wrap:hover .steps { opacity: 1; }
+
+.steps .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #333;
+  transition: background 0.3s;
+}
+
+.steps .dot.active { background: var(--gold); }
+
+.hint {
+  position: absolute;
+  bottom: 6vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.1vw;
+  color: #444;
+  letter-spacing: 2px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.stage-wrap:hover .hint { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="stage-wrap" id="stage" onclick="next()">
+
+  <div class="scene scene-1 active" data-step="0">
+    <div class="hook-num">1.54</div>
+    <div class="hook-text">
+      中国国防预算一年 <strong>1.67 万亿</strong>。<br>
+      中国人抽烟交的税，<br>
+      <strong>差不多能覆盖这笔军费。</strong>
+    </div>
+  </div>
+
+  <div class="scene scene-2" data-step="1">
+    <div class="stat-row">
+      <div class="big-num">9514<small>亿美元</small></div>
+      <div class="stat-desc">全球烟草市场规模<br>中国独占 40%</div>
+    </div>
+    <div class="stat-row">
+      <div class="big-num">18<small>个</small></div>
+      <div class="stat-desc">省级中烟公司<br>同一个总公司</div>
+    </div>
+    <div class="stat-row">
+      <div class="big-num">3<small>亿</small></div>
+      <div class="stat-desc">中国烟民<br>人均年「纳税」5000 元</div>
+    </div>
+  </div>
+
+  <div class="scene scene-3" data-step="2">
+    <div class="price-tag">一包 30 元的烟 · 钱去哪了</div>
+    <div class="bar-group">
+      <div class="bar-row">
+        <span class="bar-label">税收</span>
+        <div class="bar-track"><div class="bar-fill bar-tax"></div></div>
+        <span class="bar-val">18元</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">公司利润</span>
+        <div class="bar-track"><div class="bar-fill bar-profit"></div></div>
+        <span class="bar-val">5元</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">零售户</span>
+        <div class="bar-track"><div class="bar-fill bar-retail"></div></div>
+        <span class="bar-val">3元</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">成本</span>
+        <div class="bar-track"><div class="bar-fill bar-cost"></div></div>
+        <span class="bar-val">3元</span>
+      </div>
+    </div>
+    <div class="punch">你花 30 块，买到的东西本身只值 <strong style="color:var(--gold)">3 块</strong>。<br>剩下的 27 块，是税和垄断利润。</div>
+  </div>
+
+  <div class="scene scene-4" data-step="3">
+    <div class="year">1983</div>
+    <h3>1983 年之前，上千家小烟厂，质量混乱</h3>
+    <p>立法专卖 → 统一生产、集中税收。</p>
+    <p style="margin-top:2vh">专卖 = 垄断，但逻辑是「用垄断换控制」——控价格、控渠道、控质量。</p>
+    <p style="margin-top:2vh;color:#888">真正的原因：<strong style="color:var(--gold)">高效收税</strong>。<br>税在出厂时就收走了，不用追着 500 万零售户要。</p>
+  </div>
+
+  <div class="scene scene-5" data-step="4">
+    <span class="alert-tag">2025</span>
+    <h3>电子烟正式纳入专卖体系</h3>
+    <div class="impact">90% 以上中小企业退出</div>
+    <p>表面原因：规范市场、保护未成年人。<br>实际效果：垄断不是在退出，而是在<strong style="color:var(--gold)">扩张</strong>。</p>
+  </div>
+
+  <div class="scene scene-6" data-step="5">
+    <div class="end-line">
+      中国烟草是一个<em>悖论</em>。<br>
+      最大税源，也是最大健康负担。<br>
+      专卖让它成为最稳定的万亿生意，<br>
+      也让控烟永远不温不火。
+    </div>
+    <div class="end-tag">FastResearch · 2026</div>
+  </div>
+
+  <div class="progress" id="progress"></div>
+  <div class="steps" id="steps"></div>
+  <div class="hint">点击画面继续 →</div>
+
+</div>
+
+<script>
+const totalSteps = 6;
+let current = 0;
+
+const stepsEl = document.getElementById('steps');
+for (let i = 0; i < totalSteps; i++) {
+  const dot = document.createElement('span');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  stepsEl.appendChild(dot);
+}
+
+function update() {
+  document.querySelectorAll('.scene').forEach((s, i) => {
+    s.classList.toggle('active', i === current);
+  });
+  document.querySelectorAll('.steps .dot').forEach((d, i) => {
+    d.classList.toggle('active', i === current);
+  });
+  document.getElementById('progress').style.width = ((current + 1) / totalSteps * 100) + '%';
+}
+
+function next() {
+  current = (current + 1) % totalSteps;
+  update();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); current = (current - 1 + totalSteps) % totalSteps; update(); }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+.mp-wrap { display:flex; align-items:center; justify-content:center; width:100%; height:100%; text-align:center; }
+.mp-year { font-family:var(--font-display-en); font-size:180px; font-weight:900; color:var(--accent); line-height:1; animation:mp-pop 0.6s ease both; }
+.mp-desc { font-size:36px; color:var(--text-2); margin-top:16px; }
+.mp-sub { font-size:24px; color:var(--text-mute); margin-top:8px; }
+.mp-dual { display:flex; align-items:center; gap:40px; }
+.mp-card { padding:36px 48px; border:3px solid var(--accent); }
+.mp-card .mp-t { font-family:var(--font-display-en); font-size:32px; font-weight:900; color:var(--text); }
+.mp-card .mp-s { font-size:20px; color:var(--text-mute); margin-top:8px; }
+.mp-eq { font-size:56px; color:var(--accent); font-weight:900; }
+.mp-contra { max-width:60%; }
+.mp-contra .mp-item { font-size:30px; color:var(--text-2); margin:18px 0; position:relative; padding-left:50px; }
+.mp-contra .mp-item::before { content:'✗'; color:var(--accent); font-size:36px; position:absolute; left:0; top:-4px; }
+.mp-reason .mp-big { font-family:var(--font-display-en); font-size:72px; font-weight:900; color:var(--accent); }
+.mp-flow { display:flex; align-items:center; gap:28px; justify-content:center; margin-top:28px; }
+.mp-node { font-size:26px; color:var(--text-2); padding:14px 28px; border:2px solid var(--rule); }
+.mp-arrow { font-size:32px; color:var(--accent); }
+.mp-final .mp-line { font-family:var(--font-display-en); font-size:52px; font-weight:900; color:var(--text); line-height:1.5; }
+.mp-final .mp-accent { color:var(--accent); }
+@keyframes mp-pop { from{opacity:0;transform:scale(0.6)} to{opacity:1;transform:scale(1)} }

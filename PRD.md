@@ -1,8 +1,8 @@
 # FastResearch — 产品需求文档（PRD）
 
-> 版本：v0.2  
-> 日期：2026-06-06（更新）  
-> 基于：Hermes Skill「fast-research」v1.3.0 实际跑通验证  
+> 版本：v0.3  
+> 日期：2026-06-06  
+> 基于：Hermes Skill「fast-research」v1.3.0 实际跑通验证（香烟行业案例）  
 > GitHub：https://github.com/chentao326/fast-research
 
 ---
@@ -11,27 +11,47 @@
 
 ### 已交付：Hermes Skill 版（v1.3.0）
 
-FastResearch 首先以 Hermes Agent Skill 形态交付，已验证完整五步工作流。
-
-**Skill 位置**：`~/.hermes/skills/research/fast-research/`
-
-**已跑通**：
-- 香烟行业完整调研（五步走完，产出 A+C+D 三份）
-- 搜索故障处理（DDG lxml 兼容性、curl 替代、DDG 质量退化应对）
-- 故障速查文档
-- 美化自动集成（v1.3.0）：产出自动包含 web-design-engineer / web-video-presentation 美化
-
 **Skill 文件**：
+
 | 文件 | 内容 |
 |------|------|
 | SKILL.md | 五步工作流 + 搜索故障处理 + 美化自动化 |
-| references/question-frameworks.md | 5 套提问框架 |
+| references/question-frameworks.md | 5 套提问框架（行业/技术/社会现象/公司/学术） |
 | references/output-templates.md | 4 种输出模板 + 美化说明 |
-| references/case-study-perfume.md | 香水案例 |
+| references/case-study-perfume.md | 香水案例完整拆解 |
 
-### 待开发：Web App 版（本 PRD 主体）
+**版本演变**：
 
-Skill 版验证了方法论可行性。Web App 版的目标是把这套流程做成独立产品，让非 Hermes 用户也能用。
+| 版本 | 变更 |
+|------|------|
+| 1.0.0 | 初始五步工作流 |
+| 1.1.0 | 搜索故障处理（lxml 兼容 + curl 替代 + DDG 退化应对 + 故障速查） |
+| 1.2.0 | 集成 web-design-engineer + web-video-presentation（询问后触发） |
+| 1.3.0 | 美化改为自动触发，无需用户额外指令 |
+
+**已跑通验证**：香烟行业完整调研（五步走完，A+C+D 全产出）
+
+---
+
+### 香烟行业案例产出
+
+```
+/Volumes/My SSD/FastResearch/
+├── 香烟行业调研报告.md          # A 文字稿（7 章，Markdown）
+├── 香烟行业调研报告.html        # A 美化网页（侧边导航 + 横条图 + 税收对比卡）
+├── 香烟行业-一页纸速览.md        # D 文字稿
+├── 香烟行业-一页纸速览.html      # D 美化网页（深色名片，暖金 accent）
+├── 香烟行业-科普视频文案.md      # C 文字稿（视频大纲）
+├── 香烟行业-科普视频演示.html    # C 美化网页（6 场景，16:9，点击推进）
+└── presentation/                # web-video-presentation 脚手架版本（待完善）
+    ├── script.md                # Phase 1 口播稿（1300 字，6 段落）
+    ├── outline.md               # Phase 1 开发计划（6 章，24 步）
+    └── src/chapters/            # 6 个章节（Coldopen/Scale/Money/Monopoly/Ecig/Ending）
+```
+
+### 待开发：Web App 版
+
+Skill 版验证了方法论可行性。Web App 版把流程做成独立产品。
 
 ---
 
@@ -39,13 +59,14 @@ Skill 版验证了方法论可行性。Web App 版的目标是把这套流程做
 
 ### 1.1 产品定位
 
-FastResearch 是一个**基于「快速调研法」五步工作流的 AI 调研助手**。用户输入一个话题，系统按方法论引导完成从「提出问题」到「回顾初心」的完整流程，最终产出**自动美化**的结构化调研报告。
+基于「快速调研法」五步工作流的 AI 调研助手。输入话题 → 五步引导 → 自动产出**美化过的**结构化报告。
 
 **两个交付形态**：
+
 | 形态 | 用户 | 状态 |
 |------|------|------|
-| Hermes Skill | Hermes Agent 用户（当前用户） | ✅ v1.3.0 已交付 |
-| Web App | 任何有浏览器的人 | 📋 本 PRD |
+| Hermes Skill | Hermes Agent 用户（当前用户） | ✅ v1.3.0 |
+| Web App | 任何人 | 📋 本 PRD |
 
 ### 1.2 一句话价值
 
@@ -66,11 +87,11 @@ FastResearch 是一个**基于「快速调研法」五步工作流的 AI 调研�
 | 竞品 | 优势 | 劣势 vs FastResearch |
 |------|------|---------------------|
 | Perplexity | 实时搜索强 | 缺工作流引导，只有「搜→答」 |
-| ChatGPT Deep Research | 深度总结 | 慢（10-30分钟），无五步框架 |
+| ChatGPT Deep Research | 深度总结 | 慢（10-30 分钟），无五步框架 |
 | 豆包浏览器插件 | 视频/网页总结快 | 只是工具，无调研方法论 |
 | 各类 AI 搜索 | 速度快 | 没有「问题先行」「回归初心」 |
 
-**核心差异化**：市面上所有工具都是「输入问题→出答案」，FastResearch 是「引导你按方法论完成一次真正的研究」。不是替代你思考，而是逼你思考。
+**核心差异化**：不是「输入问题→出答案」，而是「引导你按方法论完成一次真正的研究」。不是替代你思考，而是逼你思考。
 
 ---
 
@@ -78,57 +99,56 @@ FastResearch 是一个**基于「快速调研法」五步工作流的 AI 调研�
 
 ### 2.1 五步调研工作流（P0）
 
-每一步对应一个独立的 UI 面板，步与步之间不可跳过。
+每一步对应独立 UI 面板，不可跳过。
 
-#### Step 1：问题先行（问题面板）
+#### Step 1：问题先行
 
-- **用户输入话题**（文本框）
-- **引导问题**：「你为什么对这个话题感兴趣？」（必填）
-- **手动列问题**：3 个以上的输入框，用户自己写
-- **AI 扩展按钮**：「帮我扩展更多角度」→ AI 返回 4-6 个方向，用户勾选补充
-- **最终问题清单**：确认后锁定，作为后续步骤的「指南针」固定在侧边栏
-- **设计约束**：这一步 AI 不能自动填充问题，必须用户自己先写
+- 用户输入话题 + 动机（「你为什么感兴趣？」必填）
+- 手动列 3+ 个具体问题
+- AI 扩展按钮 → 返回 4-6 个角度，用户勾选补充
+- 问题清单确认后锁定，固定在侧边栏作「指南针」
+- **硬约束**：AI 不能自动填充问题，必须用户自己先写
 
-#### Step 2：二手信息（搜索面板）
+#### Step 2：二手信息汇总
 
-- **自动搜索**：调用搜索 API（Tavily / Exa / Serper），覆盖 4-6 个角度
-- **结果预览**：标题 + 摘要 + 来源，用户可手动剔除不想要的
-- **AI 提炼**：点击「生成认知框架」→ 按 6 模块输出（一句话定义、关键数据、产业链、主流观点、争议、盲区）
-- **用户反馈**：「有没有想深挖的方向？」→ 勾选 2-3 个方向进入第三步
-- **搜索 API 推荐**：Tavily（性价比最高，中文搜索质量好）或 Exa（英文强）
+- 调用搜索 API（推荐 Tavily），覆盖 4-6 个角度
+- 结果预览（标题 + 摘要 + 来源），用户可剔除
+- AI 提炼 → 6 模块认知框架（定义 / 数据 / 结构 / 观点 / 争议 / 盲区）
+- 用户勾选 2-3 个深挖方向进入第三步
 
-#### Step 3：深度搜索（对话面板）
+#### Step 3：深度搜索
 
-- **聊天式界面**：用户针对第二步的盲区提问，AI 迭代回答
-- **「逼问模式」按钮**：一键发送「别说那么多，把最重要的两点揪出来」
-- **新对话上下文**：每次深挖自动带上第二步的框架作为背景
-- **来源追踪**：每条关键信息标注搜索来源
-- **完成判断**：用户觉得「挖够了」→ 手动进入下一步
+- 聊天界面，AI 针对盲区迭代问答
+- 「逼问模式」按钮：一键发送「别说那么多，把最重要的两点揪出来」
+- 自动携带第二步框架作上下文
+- 来源追踪：每条信息标注搜索来源
+- 用户手动进入下一步
 
-#### Step 4：整理输出 + 自动美化（输出面板）
+#### Step 4：整理输出 + 自动美化
 
-用户选择输出格式 → 系统**一次性产出** Markdown 文字稿 + 美化网页，不需要用户额外操作。
+用户选格式 → 系统一次产出 Markdown 文字稿 + 美化网页。
 
-| 输出类型 | 文字稿 | 美化产物 | 技术 |
-|---------|--------|---------|------|
-| A. 调研报告 | Markdown 文件 | 精美网页（含数据可视化、品牌化排版） | web-design-engineer |
-| C. 视频文案 | Markdown 文件 | 16:9 网页演示（step 驱动、可录屏） | web-video-presentation |
-| D. 一页纸 | Markdown 文件 | 精美单页信息卡 | web-design-engineer |
-| B. PPT 大纲 | Markdown 文件 | 不美化（中间产物） | — |
+| 输出 | 文字稿 | 美化引擎 | 美化产物 | 状态 |
+|------|--------|---------|---------|------|
+| A. 调研报告 | .md | web-design-engineer | 单文件 HTML（侧边导航 + 数据可视化 + 品牌排版） | ✅ 已验证 |
+| B. PPT 大纲 | .md | — | 不美化（中间产物） | ✅ |
+| C. 视频文案 | .md | web-video-presentation | 单文件 HTML（16:9 舞台，每步独占整屏，点击推进） | ✅ 简化版已验证 |
+| D. 一页纸 | .md | web-design-engineer | 单文件 HTML（信息卡，大字号 + 强对比） | ✅ 已验证 |
 
-**美化流程**（自动触发）：
-1. Markdown 文字稿生成落盘
-2. 自动调用对应美化引擎
-3. 美化产物落盘到同一目录
-4. 用户可在浏览器直接打开 HTML / 启动 Vite dev server 查看
+**C 类型两种交付模式**：
 
-#### Step 5：回归初心（对比面板）
+| 模式 | 适用场景 | 产物 |
+|------|---------|------|
+| 简化版（当前） | 手动点击录屏 + 后期配音 | 单文件 HTML，6-8 场景 |
+| 完整版（脚手架） | 需要音频合成、自动录屏、换主题 | Vite + React + TS 项目，narrations.ts 真相源，?auto=1 模式 |
 
-- **并排展示**：左侧 = 用户最初的问题，右侧 = 空白输入框
-- **用户自答**：自己填写答案，点「对比 AI」
-- **AI 答案展示**：并排呈现 AI 的答案 vs 用户的答案
-- **差异高亮**：AI 自动标注「你想到了但 AI 没说的」「AI 说了你没想到的」
-- **高级问题挑战**（可选）：AI 生成一个「高级问题」，邀请用户挑战
+完整版脚手架已搭建但字号/主题需优化。简化版已验证可用。
+
+#### Step 5：回归初心
+
+- 并排展示：用户最初的问题 + AI 答案
+- 用户先自己回答 → 对比 AI → 标注差异
+- 可选：AI 生成「高级问题」供挑战
 
 ### 2.2 调研历史（P1）
 
@@ -139,150 +159,211 @@ FastResearch 是一个**基于「快速调研法」五步工作流的 AI 调研�
 ### 2.3 分享功能（P2）
 
 - 生成公开链接（只读）
-- 支持导出到飞书文档、Notion
+- 导出飞书文档、Notion
 
 ---
 
-## 三、技术方案
+## 三、搜索后端（实际验证）
 
-### 3.1 技术栈推荐
+Skill 版使用的是 Hermes 内置 web_search（基于 DuckDuckGo），实际跑通中遇到的坑：
+
+| 问题 | 现象 | 修复 |
+|------|------|------|
+| lxml 兼容性 | `cannot import name 'etree' from 'lxml'` — lxml 6.x 移除 etree，ddgs 依赖旧 API | `pip install --force-reinstall "lxml>=6"` |
+| DDG 质量退化 | 搜索返回游戏网站、Reddit 等完全无关结果 | 简化查询词、用英文搜中文内容、site: 限定域 |
+| web_extract 误判 | 所有 URL 报 "Blocked: private/internal network" | 改用终端 curl 抓取 |
+| Cloudflare 保护 | 部分站点返 "Just a moment..." | 跳过换源 |
+
+**Web App 版方案**：使用 Tavily Search API（商业 API，中文好，月免 1000 次），彻底避开 DDG。
+
+---
+
+## 四、美化引擎（实际验证）
+
+### 4.1 web-design-engineer
+
+用于 A（报告）和 D（一页纸）。
+
+**已验证的交付标准**：
+- 单文件 HTML，浏览器直接打开
+- 设计系统声明 → v0 草案 → 完整构建
+- 使用 CSS 变量作设计 token（深色底 + 暖金 accent 已验证适用于烟草/商业类话题）
+- 报告页：侧边导航、章节滚动、横条图/对比卡等数据可视化
+- 一页纸：信息卡风格，大字号 + 留白 + 核心数据突出
+
+### 4.2 web-video-presentation
+
+用于 C（视频文案）。
+
+**已验证的流程**：
+- Phase 1：script.md（口播稿）+ outline.md（章节切分 + 信息池）
+- Checkpoint Plan：5 件事一次对齐
+- 最终交付：单文件 HTML（简化版）或 Vite 脚手架（完整版）
+
+**简化版 vs 完整版对比**：
+
+| 能力 | 简化版（单文件 HTML） | 完整版（Vite 脚手架） |
+|------|---------------------|---------------------|
+| 16:9 舞台 + 点击推进 | ✅ | ✅ |
+| 视觉演示（条图/卡片/动画） | ✅ | ✅ |
+| 逐章独立开发 | ❌（单文件） | ✅（独立文件夹） |
+| narrations.ts 真相源 | ❌ | ✅ |
+| 自动录屏 (?auto=1) | ❌ | ✅ |
+| 音频合成 (Phase 3) | ❌ | ✅ |
+| 换主题（覆盖 tokens.css） | ❌ | ✅ |
+| 字号响应式 | ✅（vw/clamp） | ❌（当前写死 px，需修） |
+
+**完整版已知问题**：
+1. 章节字号写死 px，不如简化版的 vw/clamp 响应式
+2. bold-signal 主题的 hot orange 偏硬，不如简化版的暖金适应性强
+
+---
+
+## 五、设计原则（Skill 版→Web App 版继承）
+
+### 5.1 「AI 做 dirty work，人做 thinking」
+
+- Step 1/5 的 AI 按钮有阻力——不让用户无脑点
+- Step 2/4 的 AI 按钮显眼——鼓励用户让 AI 干活
+- 全程侧边栏显示最初的问题列表
+
+### 5.2 诚实边界
+
+- 每次调研结束展示局限性：「给你的/没给你的」
+- 数据标注来源（AI 知识库 vs 实时搜索 vs 搜索 API）
+- 搜索挂了明确告知，不造假
+
+### 5.3 美化即默认
+
+- 用户不需要说「美化一下」
+- A/C/D 类型 = Markdown + 美化网页，一次产出
+
+---
+
+## 六、技术方案（Web App 版）
+
+### 6.1 技术栈
 
 | 层 | 选型 | 理由 |
 |----|------|------|
-| 前端 | Next.js 14+ (App Router) | 你的技术栈，Vercel 部署零成本 |
-| AI SDK | Vercel AI SDK | 流式输出、多模型切换、工具调用 |
-| 搜索 | Tavily Search API | 中文搜索质量好，每月 1000 次免费 |
-| 数据库 | Vercel Postgres / Supabase | 调研历史存储 |
-| 认证 | NextAuth.js（Google / GitHub OAuth） | 轻量 |
-| 部署 | Vercel | 你的经验（landing-generator），免费额度够用 |
+| 前端 | Next.js 14+ (App Router) | 已有经验（landing-generator），Vercel 零成本部署 |
+| AI SDK | Vercel AI SDK | 流式输出、多模型切换 |
+| 搜索 | Tavily Search API | 中文好，月免 1000 次，避开 DDG 不稳定性 |
+| 数据库 | Vercel Postgres / Supabase | 调研历史 |
+| 认证 | NextAuth.js | 轻量 OAuth |
+| 部署 | Vercel | 免费额度够用 |
 | UI | Tailwind CSS + shadcn/ui | 快速出界面 |
-| 美化引擎 | web-design-engineer + web-video-presentation | 已有 Hermes Skill，可复用 |
+| 美化 | web-design-engineer + web-video-presentation | 复用 Skill 版逻辑 |
 
-### 3.2 架构概览
+### 6.2 架构
 
 ```
 用户 → Next.js App → AI API (DeepSeek / GPT / Claude)
                     → Tavily Search API
-                    → 美化引擎 (web-design-engineer / web-video-presentation)
+                    → 美化引擎 → 单文件 HTML 输出
                     → Vercel Postgres (调研历史)
 ```
 
-### 3.3 关键技术决策
+### 6.3 关键技术决策
 
-1. **搜索选 Tavily 而非 DDG**：Skill 版验证 DDG 不稳定（lxml 兼容性、质量退化），Tavily 是商业 API 更可靠
-2. **流式输出**：调研报告生成要流式，不然用户等太久
-3. **上下文管理**：五步之间需要携带上下文——Step 1 的问题列表要贯穿全程
-4. **美化自动化**：Skill 版 v1.3.0 已验证——Markdown + 美化网页一次产出，Web App 版继承此设计
-5. **不依赖浏览器**：不需要 Camofox / Puppeteer，纯 API 调用即可
+1. **搜索选 Tavily**：DDG 不稳定已验证（lxml 兼容性、质量退化），Tavily 有免费额度
+2. **流式输出**：报告生成要流式
+3. **上下文管理**：Step 1 问题列表贯穿全程
+4. **美化自动化**：Skill 版 v1.3.0 已验证
+5. **C 类型先用简化版**：单文件 HTML 已验证可用，完整版脚手架留到 Phase 2
 
-### 3.4 成本估算
+### 6.4 成本估算
 
 | 项目 | 月度估算 |
 |------|---------|
-| Vercel 部署 | $0（免费额度内） |
-| Vercel Postgres | $0（免费 256MB） |
-| AI API（DeepSeek） | ~$10-20（按每次调研 50K token 计） |
+| Vercel 部署 | $0（免费额度） |
+| Vercel Postgres | $0（256MB 免费） |
+| AI API（DeepSeek） | $10-20（每次调研 ~50K token） |
 | Tavily Search | $0（1000 次/月免费） |
-| **总计** | **~$15-30/月** |
+| **总计** | **$15-30/月** |
 
 ---
 
-## 四、设计原则
-
-### 4.1 方法论驱动 UI
-
-不是普通的聊天窗口——每一步对应一个不同的 UI 形态：
-- Step 1：卡片式输入
-- Step 2：搜索 + 框架
-- Step 3：聊天
-- Step 4：文档编辑器
-- Step 5：并排对比
-
-### 4.2 「AI 做 dirty work，人做 thinking」
-
-- Step 1 和 Step 5 的 AI 按钮要有阻力——不让用户无脑点
-- Step 2 和 Step 4 的 AI 按钮要显眼——鼓励用户让 AI 干活
-- 全程侧边栏显示用户最初的问题（「别忘了你要回答什么」）
-
-### 4.3 诚实边界
-
-- 每次调研结束自动展示局限性：「本次调研给你的/没给你的」
-- 数据标注来源（AI 知识库 vs 实时搜索）
-- 如果搜索 API 挂了，明确告知，不造假
-
-### 4.4 美化即默认
-
-- Skill 版 v1.3.0 已验证：用户不需要说「美化一下」，输出就是美化过的
-- Web App 版继承此原则——A/C/D 类型输出 = 文字稿 + 美化网页，一键产出
-
----
-
-## 五、开发路线图
+## 七、开发路线图
 
 ### Phase 0：已完成 ✅
 
 - [x] Hermes Skill v1.3.0（五步工作流 + 搜索故障处理 + 美化自动化）
-- [x] GitHub 仓库 + 案例产出（香烟行业调研）
-- [x] 本 PRD
+- [x] 香烟行业完整案例跑通（A+C+D 全产出）
+- [x] 搜索后端问题全部修复（lxml + pip + curl 替代）
+- [x] GitHub 仓库 https://github.com/chentao326/fast-research
+- [x] web-video-presentation 脚手架版本搭建（待完善字号/主题）
+- [x] 本 PRD v0.3
 
 ### Phase 1：MVP（1-2 周）
 
 - [ ] Next.js 项目初始化 + Tailwind + shadcn/ui
-- [ ] Step 1：话题输入 + 问题引导 + AI 扩展
-- [ ] Step 2：Tavily 搜索 + AI 认知框架生成
-- [ ] Step 3：聊天式深度搜索 + 「逼问」快捷按钮
-- [ ] Step 4：四种输出格式 + 流式输出 + 美化自动触发
-- [ ] Step 5：并排对比面板
-- [ ] 调研历史存储（Vercel Postgres）
-- [ ] 部署到 Vercel
+- [ ] Step 1-5 五个面板
+- [ ] Tavily Search 集成
+- [ ] 四种输出 + 美化自动触发
+- [ ] 调研历史（Vercel Postgres）
+- [ ] Vercel 部署
 
 ### Phase 2：增强（2-3 周）
 
-- [ ] 分享链接
-- [ ] PDF 导出
+- [ ] C 类型完整版脚手架（字号 vw 化 + 主题调优）
+- [ ] 音频合成集成（脚手架 Phase 3）
+- [ ] 分享链接 + PDF 导出
 - [ ] 飞书文档导出
 - [ ] 移动端适配
-- [ ] 多语言支持（中/英）
 
 ### Phase 3：生态（1-2 月）
 
-- [ ] 浏览器插件（一键总结网页 → 接入调研流程）
-- [ ] 用户自定义输出模板
+- [ ] 浏览器插件
+- [ ] 自定义输出模板
 - [ ] 团队协作版
 - [ ] Obsidian / Notion 集成
 
 ---
 
-## 六、成功指标
+## 八、成功指标
 
 | 指标 | 目标值 | 测量方式 |
 |------|--------|---------|
 | 完课率（五步走完） | > 60% | Step 5 完成 / Step 1 开始 |
 | 输出留存率 | > 40% | 导出/分享/保存 |
-| 人均调研时长 | 30-45 分钟 | Step 1 到 Step 5 的耗时 |
-| 用户满意度 | 4.0/5 | Step 5 结束后弹评分 |
+| 人均调研时长 | 30-45 分钟 | Step 1 到 Step 5 耗时 |
+| 用户满意度 | 4.0/5 | Step 5 结束后评分 |
 
 ---
 
-## 七、风险
+## 九、风险
 
 | 风险 | 概率 | 应对 |
 |------|------|------|
-| 搜索 API 成本过高 | 中 | 控制每步搜索次数；缓存常见话题 |
-| 用户跳过 Step 1/5 | 高 | 设计上制造「温和的阻力」——不是不能跳过，但要让用户看到跳过成本 |
+| Tavily 成本超预期 | 中 | 控制每步搜索次数；缓存常见话题 |
+| 用户跳过 Step 1/5 | 高 | 制造「温和的阻力」——可跳过但看到成本 |
 | AI 输出质量不稳定 | 中 | 输出后强制用户审核 + 编辑 |
-| 跟 ChatGPT Deep Research 重叠 | 低 | 差异化在工作流和「逼人思考」，不是纯 AI 能力 |
+| C 类型完整版字号问题 | 已确认 | Phase 2 修：章节 CSS 改用 vw/clamp |
+| 跟 ChatGPT Deep Research 重叠 | 低 | 差异化在工作流和「逼人思考」 |
 
 ---
 
-## 八、Skill 版 → Web App 版迁移对照
+## 十、Skill 版 → Web App 版迁移对照
 
 | 维度 | Skill 版（已交付） | Web App 版（本 PRD） |
 |------|-------------------|---------------------|
-| 入口 | Hermes 对话（"调研 XXX"） | 浏览器 URL |
+| 入口 | Hermes 对话 | 浏览器 URL |
 | 搜索 | web_search（DDG，不稳定） | Tavily API（稳定） |
-| 输出 | 本地 .md + .html 文件 | 在线预览 + 导出 |
-| 美化 | web-design-engineer / web-video-presentation | 同左，集成到 Web 流程 |
+| 输出 | 本地 .md + .html | 在线预览 + 导出 |
+| 美化 | 同左 | 同左，集成到 Web 流程 |
 | 存储 | 无 | Vercel Postgres |
 | 分享 | 无 | 公开链接 |
 | 用户 | Hermes 用户 | 任何人 |
+| C 类型 | 简化版单文件 HTML | 简化版（Phase 1）→ 完整版脚手架（Phase 2） |
+
+---
+
+## 附录：已修复的搜索故障
+
+| 故障 | 修复命令 |
+|------|---------|
+| lxml 6.x 不兼容 ddgs | `~/.hermes/hermes-agent/venv/bin/python -m pip install --force-reinstall "lxml>=6"` |
+| venv 无 pip | `~/.hermes/hermes-agent/venv/bin/python -m ensurepip` |
+| web_extract 误判内网 | 改用 `curl -sL --max-time 15 "URL" | sed 's/<[^>]*>//g'` |
+| DDG 质量退化 | 简化查询词、英文搜中文、site: 限定域 |

@@ -1,0 +1,16 @@
+.ec-wrap { display:flex; align-items:center; justify-content:center; width:100%; height:100%; text-align:center; }
+.ec-tag { display:inline-block; font-family:var(--font-display-en); font-size:40px; font-weight:900; color:var(--shell); background:var(--accent); padding:14px 48px; animation:ec-down 0.6s ease both; }
+.ec-msg { font-family:var(--font-display-en); font-size:48px; font-weight:900; color:var(--text); margin-top:28px; animation:ec-up 0.5s 0.2s ease both; }
+.ec-surface { max-width:60%; }
+.ec-surface .ec-r { font-size:30px; color:var(--text-mute); margin:14px 0; }
+.ec-surface .ec-r::before { content:'官方说法：'; color:var(--text-faint); font-size:22px; display:block; margin-bottom:6px; }
+.ec-impact .ec-num { font-family:var(--font-display-en); font-size:180px; font-weight:900; color:var(--accent); line-height:1; animation:ec-pop 0.5s ease both; }
+.ec-impact .ec-s { font-size:36px; color:var(--text); margin-top:16px; }
+.ec-icons { display:flex; gap:10px; justify-content:center; margin-top:36px; }
+.ec-icon { width:56px; height:90px; border:2px solid var(--rule); }
+.ec-icon.gone { opacity:0.1; transform:scale(0.6); border-color:var(--text-faint); }
+.ec-conclusion .ec-l { font-family:var(--font-display-en); font-size:52px; font-weight:900; color:var(--text); line-height:1.5; }
+.ec-conclusion .ec-a { color:var(--accent); }
+@keyframes ec-down { from{opacity:0;transform:translateY(-60px)} to{opacity:1;transform:translateY(0)} }
+@keyframes ec-up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes ec-pop { from{opacity:0;transform:scale(0.4)} to{opacity:1;transform:scale(1)} }
